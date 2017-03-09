@@ -1,0 +1,6 @@
+#!/bin/sh
+
+gcc -c DieWithError.c
+gcc -o client client.c DieWithError.o
+
+echo client compilation complete

@@ -1,0 +1,9 @@
+#!/bin/sh
+
+gcc -c server.c
+gcc -c DieWithError.c
+gcc -c HandleTCPClient.c
+
+gcc -o server server.o HandleTCPClient.o  DieWithError.o
+
+echo server compilation completed
