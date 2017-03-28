@@ -12,6 +12,7 @@
 #include <unistd.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
+#include <pthread.h>
 #include "structs.h"
 
 #define BUFFER_SIZE 1024
@@ -41,7 +42,10 @@ void SendMessage(int clientSock, char *buffer, struct usrList*); //something is 
 void GetMessage(int clientSock, char *buffer, struct usrList *userList);
 
 
-void HandleTCPClient(int clientSock, struct usrList *userList){
+void *HandleTCPClient(void* p){
+    struct param *info = (struct param*) p;
+    int clientSock = info->clientSock;
+    struct usrList* userList = info->userList;
     char* ptr;
     char buffer[BUFFER_SIZE];
     while(1){
@@ -89,12 +93,12 @@ void HandleTCPClient(int clientSock, struct usrList *userList){
                     close(clientSock);
                 ResetBuffer(buffer);
                 printf("------------------------------------------------\n");
-                return;
+                pthread_exit(0);
             default:
                 DieWithError("Invalid request!");
         }
     }
-    return;
+    pthread_exit(0);
 }
 
 void Login(int clientSock, char *buffer, struct usrList *userList){

@@ -12,6 +12,8 @@
 #include <unistd.h>
 #include <sys/socket.h>
 #include <arpa/inet.h>
+#include <pthread.h>
+
 #include "structs.h"
 
 #define BUFFER_SIZE 1024
@@ -30,7 +32,7 @@
 
 struct usrList userList;
 int serverSock;
-int clientSock; // one socket for each customers
+int clSock; // one socket for each customers
 struct sockaddr_in serverAddr;
 struct sockaddr_in clientAddr;
 unsigned short serverPort;
@@ -38,7 +40,7 @@ unsigned int clientLength; // client address struct length
 char* ptr; // pointer to manipulate buffer
 
 void DieWithError(char *errorMessage);
-void HandleTCPClient(int, struct usrList*);
+void *HandleTCPClient(void* p);
 
 int main(int argc, char* args[]){
     struct usr Alice;
@@ -90,13 +92,18 @@ int main(int argc, char* args[]){
         clientLength = sizeof(clientAddr);
         
         /* accept connection request */
-        if ((clientSock = accept(serverSock, (struct sockaddr*) &clientAddr, &clientLength)) < 0) {
+        if ((clSock = accept(serverSock, (struct sockaddr*) &clientAddr, &clientLength)) < 0) {
             DieWithError("accept() failed");
         }
         
         printf("Handling client %s\n", inet_ntoa(clientAddr.sin_addr));
         
-        HandleTCPClient(clientSock, &userList);
+        struct param p;
+        p.clientSock = clSock;
+        p.userList = &userList;
+        pthread_t tid;
+        pthread_create(&tid, NULL, HandleTCPClient, &p);
+        //HandleTCPClient(clientSock, &userList);
         
         printf("Finished handling %s\n", inet_ntoa(clientAddr.sin_addr));
     }

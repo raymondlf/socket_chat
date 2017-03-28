@@ -23,4 +23,9 @@ struct usrList{
     struct usr usr[MAX_USERS];
     int numUsr;
 };
+
+struct param{
+    int clientSock;
+    struct usrList* userList;
+};
 #endif /* structs_h */
