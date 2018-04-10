@@ -1,8 +1,8 @@
 #!/bin/sh
 
-gcc -c server.c
-gcc -c DieWithError.c
-gcc -c HandleTCPClient.c
+gcc -pthread -c server.c
+gcc -pthread -c DieWithError.c
+gcc -pthread -c HandleTCPClient.c
 
 gcc -o server server.o HandleTCPClient.o  DieWithError.o
 

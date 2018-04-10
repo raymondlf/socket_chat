@@ -75,11 +75,11 @@ int main(int argc, char* args[]){
         memset(buffer, 0, sizeof(buffer));
         printf("------------------------------------------------\n");
         printf("\t1. Connect to the server\n");
-        printf("\t2. Get the user list\n");
+        printf("\t2. Get user list\n");
         printf("\t3. Send a message\n");
         printf("\t4. Get my message\n");
         printf("\t5. Initiate a chat with my friend\n");
-        printf("\t6. Chat with my friend\n");
+        printf("\t6. Connect to chat with a friend\n");
         printf("\t0. exit application\n");
         printf("------------------------------------------------\n");
         printf("> ");
@@ -428,7 +428,7 @@ void InitChat(){
     while(1){ /* run forever */
         /* send message */
         ResetBuffer(buffer);
-        printf("%s > ", username);
+        printf("%s (input quit to exit) > ", username);
         scanf(" %958[^\n]", &buffer[66]);
         ptr = &buffer[66];
         if(strcmp(ptr, "quit") == 0) { // user quit
@@ -552,7 +552,7 @@ void Chat(){
     while(1){ /* run forever */
         /* send message */
         ResetBuffer(buffer);
-        printf("%s > ", username);
+        printf("%s (input quit to exit) > ", username);
         scanf(" %958[^\n]", &buffer[66]);
         ptr = &buffer[66];
         if(strcmp(ptr, "quit") == 0) { // user quit

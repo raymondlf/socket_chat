@@ -1,6 +1,6 @@
 #!/bin/sh
 
-gcc -c DieWithError.c
-gcc -o client client.c DieWithError.o
+gcc -pthread  -c DieWithError.c
+gcc -pthread -o client client.c DieWithError.o
 
 echo client compilation complete
